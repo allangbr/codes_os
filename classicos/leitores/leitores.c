@@ -14,6 +14,8 @@ int readcount = 0;
 
 //
 // TODO: Definição dos semáforos (variaveis precisam ser globais)
+int marea;
+int mcont;
 //
 
 // dado compartilhado que os leitores e escritores acessarão
@@ -45,6 +47,8 @@ int main(int argc, char ** argv)
     //
     // TODO: Criação dos semáforos (aqui é quando define seus
     // valores, usando a biblioteca dijkstra.h
+        marea = sem_create(KEY, 1)
+        mcont = sem_create(KEY, 1)
     // 
  
     // num leitores
@@ -85,6 +89,8 @@ int main(int argc, char ** argv)
 
     //
     // TODO: Excluindo os semaforos (dijkstra.h)
+        sem_delete(marea);
+        sem_delete(mcont);
     // 
 
     // liberando a memoria alocada
@@ -103,6 +109,12 @@ void * leitor(void * id)
 
     //
     // TODO: precisa fazer o controle de acesso à entrada do leitor
+    P(mcont);
+    readcount++;
+    if (readcount == 1){
+        P(marea);
+    }
+    V(mcont);
     //
     
     printf("> Leitor %d tentando acesso\n",i);
@@ -113,6 +125,12 @@ void * leitor(void * id)
 
     //
     // TODO: precisa fazer a saída do leitor e liberação do acesso
+    P(mcont);
+    readcount--;
+    if (readcount == 0){
+        V(marea);
+    }
+    V(mcont);
     //
 
     printf("< Leitor %d liberando acesso\n",i);
@@ -128,6 +146,7 @@ void * escritor(void * id)
 
     //
     // TODO: precisa controlar o acesso do escritor ao recurso
+    P(marea)
     //
     
     printf("+ Escritor %d tentando acesso\n",i);
@@ -140,6 +159,7 @@ void * escritor(void * id)
     
     //
     // TODO: precisa fazer a saída do escritor e liberação do acesso
+    V(marea)
     //
     
     printf("+ Escritor %d saindo\n",i);
