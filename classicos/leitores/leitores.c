@@ -9,6 +9,8 @@
 #include <pthread.h>
 #include "../dijkstra.h"
 
+#define KEY 1234
+
 // quantidade de leitores lendo
 int readcount = 0;
 
@@ -47,8 +49,8 @@ int main(int argc, char ** argv)
     //
     // TODO: Criação dos semáforos (aqui é quando define seus
     // valores, usando a biblioteca dijkstra.h
-        marea = sem_create(KEY, 1)
-        mcont = sem_create(KEY, 1)
+        marea = sem_create(KEY, 1);
+        mcont = sem_create(KEY, 1);
     // 
  
     // num leitores
@@ -146,7 +148,7 @@ void * escritor(void * id)
 
     //
     // TODO: precisa controlar o acesso do escritor ao recurso
-    P(marea)
+    P(marea);
     //
     
     printf("+ Escritor %d tentando acesso\n",i);
@@ -159,7 +161,7 @@ void * escritor(void * id)
     
     //
     // TODO: precisa fazer a saída do escritor e liberação do acesso
-    V(marea)
+    V(marea);
     //
     
     printf("+ Escritor %d saindo\n",i);
